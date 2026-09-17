@@ -21,9 +21,11 @@ backend/data/*.sqlite3.tmp
 node_modules/
 frontend/dist/
 
-# Demo film. Source footage, the licensed music track and the rendered film are
-# all large binaries that are reproducible from `npm run capture` and
-# `npm run render`, so only the code that builds them is tracked.
+# Demo film. Source footage, the captured stills it is assembled from, the
+# licensed music track and the rendered film are all large binaries that are
+# reproducible from `npm run capture` and `npm run render`, so only the code
+# that builds them is tracked. `demo/src/takes.json` is deliberately not here:
+# it is small, and it is what makes the edit readable without the footage.
 demo/out/
 demo/public/footage/
 demo/public/audio/
@@ -42,3 +44,6 @@ Thumbs.db
 # Docker
 docker-compose.override.yml
 .aider*
+demo/.stills/
+demo/.fps-probe/
+demo/.layout-probe/
