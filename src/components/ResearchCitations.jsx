@@ -20,8 +20,16 @@ export default function ResearchCitations() {
         {/* 4 Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {RESEARCH_EVIDENCE.map((item, idx) => (
-            <div key={idx} className="p-6 rounded-2xl bg-paper border border-charcoal-200/80 flex flex-col justify-between">
+            <div key={idx} className="p-6 rounded-2xl bg-paper border border-charcoal-200/80 flex flex-col justify-between hover:border-tea-500 hover:shadow-subtle transition-all">
               <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-tea-50 text-tea-800 border border-tea-200/60 uppercase">
+                    Ref 0{idx + 1}
+                  </span>
+                  <span className="text-[10px] text-emerald-700 font-mono font-semibold flex items-center gap-1">
+                    <span>✓ Peer-Reviewed</span>
+                  </span>
+                </div>
                 <div className="text-3xl sm:text-4xl font-extrabold font-mono text-tea-900 tracking-tight">
                   {item.stat}
                 </div>
@@ -33,8 +41,9 @@ export default function ResearchCitations() {
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-charcoal-100 text-[11px] font-mono text-charcoal-500">
-                Source: {item.source}
+              <div className="mt-4 pt-3 border-t border-charcoal-100 text-[11px] font-mono text-charcoal-500 flex items-center justify-between">
+                <span>Source: {item.source}</span>
+                <ExternalLink className="w-3 h-3 text-charcoal-400" />
               </div>
             </div>
           ))}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, Sparkles, Activity, ShieldCheck, WifiOff, Volume2, Heart, RotateCcw } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Activity, ShieldCheck, WifiOff, Volume2, Heart, RotateCcw, Award } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import { sound } from '../lib/audio';
 import { REGIONAL_MOTIFS, RADAR_AXES } from '../data/mockData';
 
@@ -7,19 +8,39 @@ export default function AgentHero() {
   const [activeTab, setActiveTab] = useState('elderly'); // 'elderly' | 'caregiver'
   const [flippedCards, setFlippedCards] = useState([0]); // indexes flipped
   const [voicePlaying, setVoicePlaying] = useState(false);
+  const [radarTimeline, setRadarTimeline] = useState('current'); // 'baseline' | 'current' | 'projected'
 
   const toggleCard = (index) => {
     sound.playClick();
-    setFlippedCards(prev => 
-      prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
-    );
+    setFlippedCards(prev => {
+      const next = prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index];
+      if (next.length === 3 && prev.length < 3) {
+        sound.playHarmony();
+        try {
+          confetti({
+            particleCount: 40,
+            spread: 55,
+            origin: { y: 0.6 },
+            colors: ['#388872', '#5BA590', '#B45309', '#F97316']
+          });
+        } catch (e) {
+          // fallback
+        }
+      }
+      return next;
+    });
+  };
+
+  const resetCards = () => {
+    sound.playClick();
+    setFlippedCards([]);
   };
 
   const playVoice = () => {
     setVoicePlaying(true);
     sound.playHarmony();
     sound.speakPrompt('नमस्ते दादी! क्या आप इस तस्वीर को पहचानती हैं? यह काजीरंगा का एक सींग वाला गेंडा है।');
-    setTimeout(() => setVoicePlaying(false), 4000);
+    setTimeout(() => setVoicePlaying(false), 4500);
   };
 
   return (
@@ -45,27 +66,29 @@ export default function AgentHero() {
             elderly never had.
           </h1>
 
-          <p className="text-base sm:text-xl text-charcoal-600 leading-relaxed font-normal max-w-2xl mx-auto">
-            Offline-first reminiscence therapy and cognitive stimulation engineered for terrain blackouts, 200+ indigenous dialects, and zero geriatric neurology infrastructure in rural Assam, Meghalaya, and beyond.
+          <p className="text-base sm:text-lg text-charcoal-600 leading-relaxed font-normal max-w-2xl mx-auto">
+            Offline-first reminiscence therapy and adaptive cognitive stimulation engineered for terrain blackouts, indigenous dialects, and zero rural geriatric neurologists.
           </p>
 
           {/* Action CTAs */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
             <a
               href="#demo"
+              onClick={() => sound.playClick()}
               className="group inline-flex items-center pl-6 pr-2 py-3 rounded-full bg-tea-900 text-white text-sm font-semibold hover:bg-tea-800 transition-all duration-300 shadow-elevation active:scale-98"
             >
-              <span>Watch 3-Min SIH Hackathon Demo</span>
+              <span>Watch 3-Min Jury Demo</span>
               <span className="ml-3 w-8 h-8 rounded-full bg-white/15 flex items-center justify-center btn-nested-icon">
                 <ArrowUpRight className="w-4 h-4 text-white" />
               </span>
             </a>
 
             <a
-              href="#pillars"
-              className="inline-flex items-center px-6 py-3 rounded-full bg-white border border-charcoal-200 text-charcoal-800 text-sm font-semibold hover:bg-charcoal-50 transition-all shadow-subtle active:scale-98"
+              href="#platform"
+              onClick={() => sound.playClick()}
+              className="inline-flex items-center px-6 py-3 rounded-full bg-white border border-charcoal-200/90 text-charcoal-800 text-sm font-semibold hover:bg-charcoal-50 hover:border-charcoal-300 transition-all shadow-subtle active:scale-98"
             >
-              Clinical Validation
+              Explore 7 Capabilities
             </a>
           </div>
 
@@ -151,8 +174,15 @@ export default function AgentHero() {
                           <Volume2 className={`w-5 h-5 ${voicePlaying ? 'animate-bounce' : ''}`} />
                         </button>
                         <div>
-                          <div className="text-xs uppercase font-bold tracking-wider text-amberGold-900">
-                            Spoken Audio Guidance • बोलकर मार्गदर्शन
+                          <div className="text-xs uppercase font-bold tracking-wider text-amberGold-900 flex items-center gap-2">
+                            <span>Spoken Audio Guidance • बोलकर मार्गदर्शन</span>
+                            {voicePlaying && (
+                              <span className="flex items-center gap-0.5">
+                                <span className="w-1 h-3 bg-amberGold-700 rounded-full animate-pulse" />
+                                <span className="w-1 h-4 bg-amberGold-700 rounded-full animate-pulse delay-75" />
+                                <span className="w-1 h-2 bg-amberGold-700 rounded-full animate-pulse delay-150" />
+                              </span>
+                            )}
                           </div>
                           <div className="text-sm font-medium text-charcoal-800">
                             "नमस्ते दादी! क्या आप इस तस्वीर को पहचानती हैं?"
@@ -160,10 +190,37 @@ export default function AgentHero() {
                         </div>
                       </div>
 
-                      <div className="text-xs text-charcoal-500 italic">
-                        Tap any card to flip & stimulate recall
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-white border border-amberGold-200 text-amberGold-900">
+                          {flippedCards.length}/3 Recalled
+                        </span>
+                        {flippedCards.length > 0 && (
+                          <button
+                            onClick={resetCards}
+                            title="Reset Cards"
+                            className="p-1.5 rounded-lg text-charcoal-500 hover:bg-white/80 hover:text-charcoal-800 transition-colors"
+                          >
+                            <RotateCcw className="w-4 h-4" />
+                          </button>
+                        )}
                       </div>
                     </div>
+
+                    {/* Celebration Banner when 3/3 matched */}
+                    {flippedCards.length === 3 && (
+                      <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-300 text-xs text-emerald-950 flex items-center justify-between shadow-subtle animate-in fade-in duration-300">
+                        <div className="flex items-center gap-2 font-bold">
+                          <Award className="w-4 h-4 text-emerald-700" />
+                          <span>All 3 Regional Stimuli Recalled! Synaptic pathways reinforced with zero error buzzers.</span>
+                        </div>
+                        <button
+                          onClick={resetCards}
+                          className="px-2.5 py-1 rounded-lg bg-emerald-700 text-white font-semibold text-[11px] hover:bg-emerald-800 transition-colors"
+                        >
+                          Play Next Set
+                        </button>
+                      </div>
+                    )}
 
                     {/* Regional Tactile Cards Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -173,13 +230,19 @@ export default function AgentHero() {
                           <div
                             key={item.id}
                             onClick={() => toggleCard(idx)}
-                            className="cursor-pointer group p-5 rounded-2xl bg-paper hover:bg-white border border-charcoal-200/80 hover:border-tea-500 transition-all duration-300 shadow-subtle hover:shadow-elevation active:scale-[0.98]"
+                            className={`cursor-pointer group p-5 rounded-2xl transition-all duration-300 shadow-subtle active:scale-[0.98] border ${
+                              isFlipped
+                                ? 'bg-white border-tea-500 ring-2 ring-tea-400/20 shadow-elevation'
+                                : 'bg-paper hover:bg-white border-charcoal-200/80 hover:border-tea-400'
+                            }`}
                           >
                             <div className="flex items-start justify-between">
                               <span className="text-4xl filter drop-shadow-sm transition-transform duration-300 group-hover:scale-110">
                                 {item.icon}
                               </span>
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-tea-50 text-tea-800 border border-tea-200/60 uppercase">
+                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                                isFlipped ? 'bg-tea-50 text-tea-800 border border-tea-200' : 'bg-charcoal-100 text-charcoal-600'
+                              }`}>
                                 Pair #{idx + 1}
                               </span>
                             </div>
@@ -193,8 +256,8 @@ export default function AgentHero() {
                                 {item.region}
                               </p>
                               <div className="mt-3 pt-3 border-t border-charcoal-100 flex items-center justify-between text-[11px] font-semibold text-tea-700">
-                                <span>{isFlipped ? '✓ Recalled' : 'Tap to match'}</span>
-                                <span className="text-xs">➔</span>
+                                <span>{isFlipped ? '✓ Recalled & Validated' : 'Tap to stimulate recall'}</span>
+                                <span className="text-xs">{isFlipped ? '✨' : '➔'}</span>
                               </div>
                             </div>
                           </div>
@@ -203,13 +266,13 @@ export default function AgentHero() {
                     </div>
 
                     {/* Tactile Response Feedback */}
-                    <div className="p-3.5 rounded-xl bg-tea-50 border border-tea-200/60 flex items-center justify-between text-xs text-tea-900">
+                    <div className="p-3.5 rounded-xl bg-tea-50 border border-tea-200/60 flex flex-wrap items-center justify-between gap-2 text-xs text-tea-900">
                       <div className="flex items-center gap-2 font-semibold">
                         <Heart className="w-4 h-4 text-terracotta-600 fill-terracotta-600" />
                         <span>Adaptive Fatigue Model Active:</span>
-                        <span className="font-normal text-tea-800">Response time 2.1s • Latency stable</span>
+                        <span className="font-normal text-tea-800">Response latency 2.1s • Psychomotor baseline stable</span>
                       </div>
-                      <span className="font-mono font-bold text-tea-700">Challenge Level: Calm / Gentle</span>
+                      <span className="font-mono font-bold text-tea-700">Pacing: Gentle / Errorless</span>
                     </div>
 
                   </div>
@@ -225,7 +288,7 @@ export default function AgentHero() {
                           <p className="text-xs text-charcoal-500">Patient: Shrimati Kamala Devi (Age 72, MCI)</p>
                         </div>
                         <span className="px-2 py-1 rounded-full bg-emerald-50 text-emerald-800 font-mono text-[11px] font-bold">
-                          Index: 73/100
+                          Index: {radarTimeline === 'baseline' ? '64/100' : radarTimeline === 'projected' ? '82/100' : '73/100'}
                         </span>
                       </div>
 
@@ -254,12 +317,19 @@ export default function AgentHero() {
                             strokeDasharray="4 3"
                           />
 
-                          {/* Current Active Scoring Polygon */}
+                          {/* Active Scoring Polygon (Responsive to Timeline) */}
                           <polygon
-                            points="120,42 195,95 168,180 72,180 45,95"
+                            points={
+                              radarTimeline === 'baseline'
+                                ? "120,55 185,105 160,175 80,175 55,105"
+                                : radarTimeline === 'projected'
+                                ? "120,34 200,90 172,186 68,186 38,90"
+                                : "120,42 195,95 168,180 72,180 45,95"
+                            }
                             fill="rgba(12, 59, 44, 0.25)"
                             stroke="#0C382E"
                             strokeWidth="2.5"
+                            className="transition-all duration-500 ease-out"
                           />
 
                           {/* Axis Labels */}
@@ -271,15 +341,29 @@ export default function AgentHero() {
                         </svg>
                       </div>
 
-                      <div className="flex items-center justify-center gap-5 text-xs text-charcoal-500 pt-2 border-t border-charcoal-100">
-                        <span className="flex items-center gap-1.5 font-medium">
-                          <span className="w-2.5 h-2.5 rounded-sm bg-tea-900"></span>
-                          Current Session
-                        </span>
-                        <span className="flex items-center gap-1.5 font-medium">
-                          <span className="w-2.5 h-2.5 rounded-sm bg-charcoal-300"></span>
-                          14-Day Baseline
-                        </span>
+                      {/* Interactive Timeline Switcher */}
+                      <div className="flex items-center justify-between pt-3 border-t border-charcoal-100 text-xs">
+                        <span className="text-charcoal-500 font-mono text-[11px]">Timeline Horizon:</span>
+                        <div className="flex items-center gap-1 p-0.5 rounded-lg bg-charcoal-100 text-[11px] font-medium">
+                          <button
+                            onClick={() => { sound.playClick(); setRadarTimeline('baseline'); }}
+                            className={`px-2 py-0.5 rounded-md transition-all ${radarTimeline === 'baseline' ? 'bg-white text-charcoal-900 font-bold shadow-subtle' : 'text-charcoal-600'}`}
+                          >
+                            Day 0
+                          </button>
+                          <button
+                            onClick={() => { sound.playClick(); setRadarTimeline('current'); }}
+                            className={`px-2 py-0.5 rounded-md transition-all ${radarTimeline === 'current' ? 'bg-white text-tea-900 font-bold shadow-subtle' : 'text-charcoal-600'}`}
+                          >
+                            Day 14 (Active)
+                          </button>
+                          <button
+                            onClick={() => { sound.playClick(); setRadarTimeline('projected'); }}
+                            className={`px-2 py-0.5 rounded-md transition-all ${radarTimeline === 'projected' ? 'bg-white text-emerald-900 font-bold shadow-subtle' : 'text-charcoal-600'}`}
+                          >
+                            Day 60 (Goal)
+                          </button>
+                        </div>
                       </div>
                     </div>
 

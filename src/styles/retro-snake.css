@@ -1,0 +1,368 @@
+/* ==========================================================================
+   RETRO SNAKE ARCADE STYLES
+   Scoped specifically under .retro-arcade-shell & #snake-game
+   Preserves 100% fidelity with the original memorygames.net/retro-snake engine
+   without interfering with Tailwind CSS or YaadSaathi layout.
+   ========================================================================== */
+
+/* Scoped Bootstrap Utilities for the Snake Engine */
+.retro-arcade-shell .d-flex {
+  display: flex !important;
+}
+
+.retro-arcade-shell .d-block {
+  display: block !important;
+}
+
+.retro-arcade-shell .d-grid {
+  display: grid !important;
+}
+
+.retro-arcade-shell .flex-column {
+  flex-direction: column !important;
+}
+
+.retro-arcade-shell .flex-row {
+  flex-direction: row !important;
+}
+
+.retro-arcade-shell .justify-content-center {
+  justify-content: center !important;
+}
+
+.retro-arcade-shell .align-items-center {
+  align-items: center !important;
+}
+
+.retro-arcade-shell .align-items-baseline {
+  align-items: baseline !important;
+}
+
+.retro-arcade-shell .position-relative {
+  position: relative !important;
+}
+
+.retro-arcade-shell .position-absolute {
+  position: absolute !important;
+}
+
+.retro-arcade-shell .top-0 {
+  top: 0 !important;
+}
+
+.retro-arcade-shell .start-0 {
+  left: 0 !important;
+}
+
+.retro-arcade-shell .top-50 {
+  top: 50% !important;
+}
+
+.retro-arcade-shell .start-50 {
+  left: 50% !important;
+}
+
+.retro-arcade-shell .translate-middle {
+  transform: translate(-50%, -50%) !important;
+}
+
+.retro-arcade-shell .w-100 {
+  width: 100% !important;
+}
+
+.retro-arcade-shell .h-100 {
+  height: 100% !important;
+}
+
+.retro-arcade-shell .m-0 {
+  margin: 0 !important;
+}
+
+.retro-arcade-shell .mt-1 {
+  margin-top: 0.25rem !important;
+}
+
+.retro-arcade-shell .mt-2 {
+  margin-top: 0.5rem !important;
+}
+
+.retro-arcade-shell .mt-3 {
+  margin-top: 1rem !important;
+}
+
+.retro-arcade-shell .my-0 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.retro-arcade-shell .my-2 {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.retro-arcade-shell .my-3 {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.retro-arcade-shell .p-0 {
+  padding: 0 !important;
+}
+
+.retro-arcade-shell .p-3 {
+  padding: 1rem !important;
+}
+
+.retro-arcade-shell .p-4 {
+  padding: 1.5rem !important;
+}
+
+.retro-arcade-shell .px-2 {
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
+
+.retro-arcade-shell .gap-1 {
+  gap: 0.25rem !important;
+}
+
+.retro-arcade-shell .gap-2 {
+  gap: 0.5rem !important;
+}
+
+.retro-arcade-shell .gap-3 {
+  gap: 1rem !important;
+}
+
+.retro-arcade-shell .gap-4 {
+  gap: 1.5rem !important;
+}
+
+.retro-arcade-shell .gap-5 {
+  gap: 3rem !important;
+}
+
+.retro-arcade-shell .text-center {
+  text-align: center !important;
+}
+
+.retro-arcade-shell .text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.retro-arcade-shell .fw-bolder {
+  font-weight: 700 !important;
+}
+
+.retro-arcade-shell .fs-1 {
+  font-size: 2.5rem !important;
+}
+
+.retro-arcade-shell .fs-2 {
+  font-size: 2rem !important;
+}
+
+.retro-arcade-shell .fs-3 {
+  font-size: 1.5rem !important;
+}
+
+.retro-arcade-shell .rounded-3 {
+  border-radius: 0.5rem !important;
+}
+
+.retro-arcade-shell .z-1 {
+  z-index: 1 !important;
+}
+
+.retro-arcade-shell .z-2 {
+  z-index: 2 !important;
+}
+
+/* Button & interactive styling inside Snake */
+.retro-arcade-shell .btn {
+  display: inline-block;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, transform 0.1s ease;
+}
+
+.retro-arcade-shell .btn:active {
+  transform: scale(0.96);
+}
+
+.retro-arcade-shell .btn-info {
+  background-color: #2b331a !important;
+  color: #9bba5a !important;
+  border: 2px solid #415222 !important;
+  box-shadow: 0 3px 0 #1b2210;
+  font-family: PixelFont, monospace !important;
+  font-size: 14px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 14px !important;
+}
+
+.retro-arcade-shell .btn-info:hover {
+  background-color: #1e2412 !important;
+  color: #d5f784 !important;
+}
+
+.retro-arcade-shell .btn-outline-dark {
+  color: #2b331a !important;
+  background-color: #9bba5a !important;
+  border: 2px solid #2b331a !important;
+  box-shadow: 0 3px 0 #415222;
+  border-radius: 8px !important;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.retro-arcade-shell .btn-outline-dark:hover {
+  background-color: #aed165 !important;
+  transform: translateY(-1px);
+}
+
+.retro-arcade-shell .btn-outline-dark:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #415222;
+}
+
+/* Arrow controls (D-Pad) inside the engine */
+.retro-arcade-shell .snk-btn-arrow {
+  width: 48px;
+  height: 48px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 12px !important;
+  background: #2b331a !important;
+  border: 2px solid #415222 !important;
+  color: #9bba5a !important;
+  box-shadow: 0 4px 0 #151a0d, 0 6px 12px rgba(0,0,0,0.3) !important;
+  cursor: pointer;
+  transition: transform 0.08s ease, background-color 0.1s ease !important;
+}
+
+.retro-arcade-shell .snk-btn-arrow:hover {
+  background: #384323 !important;
+  color: #d5f784 !important;
+}
+
+.retro-arcade-shell .snk-btn-arrow:active {
+  transform: translateY(3px) scale(0.95) !important;
+  box-shadow: 0 1px 0 #151a0d !important;
+}
+
+.retro-arcade-shell .snk-btn-arrow svg {
+  color: #9bba5a !important;
+  width: 22px;
+  height: 22px;
+}
+
+/* Form switch controls (if any) */
+.retro-arcade-shell .form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.retro-arcade-shell .form-check-input {
+  cursor: pointer;
+}
+
+/* Win / Game Over Popups */
+.retro-arcade-shell .win-popup-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background-color: rgba(20, 26, 12, 0.65);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.retro-arcade-shell .win-popup-box {
+  background-color: #859b4e !important;
+  border: 4px solid #2b331a !important;
+  box-shadow: 0 8px 0 #1a2010, 0 12px 28px rgba(0, 0, 0, 0.45) !important;
+  border-radius: 12px !important;
+  color: #2b331a !important;
+  padding: 1.5rem !important;
+  font-family: PixelFont, monospace !important;
+}
+
+/* Authentic Nokia/GameBoy Green-Screen LCD Frame */
+.retro-screen-bezel {
+  background: #859b4e;
+  border: 8px solid #1a2010;
+  border-radius: 14px;
+  box-shadow: 
+    inset 0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 2px #415222,
+    0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pixel Grid & Scanlines Effect */
+.retro-screen-bezel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0) 50%, 
+    rgba(0, 0, 0, 0.06) 50%
+  ),
+  linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.02),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.02)
+  );
+  background-size: 100% 4px, 6px 100%;
+  z-index: 10;
+  opacity: 0.8;
+}
+
+/* Handheld Console Plastic Casing */
+.retro-console-chassis {
+  background: linear-gradient(145deg, #2a2f35 0%, #1c2024 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 25px 60px -15px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Glowing Arcade LED */
+.retro-led-power {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  box-shadow: 0 0 8px #22c55e, 0 0 16px #22c55e;
+  animation: retro-led-pulse 2s infinite ease-in-out;
+}
+
+@keyframes retro-led-pulse {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}

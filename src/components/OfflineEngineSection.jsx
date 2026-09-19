@@ -6,6 +6,10 @@ export default function OfflineEngineSection() {
   const [isAirplaneMode, setIsAirplaneMode] = useState(false);
   const [queuedSessions, setQueuedSessions] = useState(0);
   const [syncStatus, setSyncStatus] = useState('All data synchronized with Supabase');
+  const [records, setRecords] = useState([
+    { id: 'REC-0841', game: 'Cultural Match (Kaziranga Rhino)', time: '14:28:10', latency: '2.1s', status: 'synced' },
+    { id: 'REC-0842', game: 'Face Recall (Amit in Shillong)', time: '14:29:45', latency: '1.9s', status: 'synced' },
+  ]);
 
   const toggleAirplaneMode = () => {
     sound.playClick();
@@ -18,20 +22,39 @@ export default function OfflineEngineSection() {
       setSyncStatus('Online: Synchronizing queued sessions to Supabase...');
       setTimeout(() => {
         setQueuedSessions(0);
+        setRecords(prev => prev.map(r => ({ ...r, status: 'synced' })));
         setSyncStatus('✓ 100% Synced (All sessions flushed to cloud)');
         sound.playHarmony();
-      }, 1200);
+      }, 1000);
     }
   };
 
   const simulatePlaySession = () => {
     sound.playClick();
+    const newId = `REC-084${records.length + 1}`;
+    const now = new Date().toTimeString().slice(0, 8);
+    const gameTitles = [
+      'Sequence Memory (Bihu Japi)',
+      'Reminiscence Clue (Majuli Mask)',
+      'Visuospatial (Assam Tea Kettle)',
+      'Daily Routine (Morning Chai & Meds)'
+    ];
+    const pickedGame = gameTitles[records.length % gameTitles.length];
+
     if (isAirplaneMode) {
       setQueuedSessions(prev => prev + 1);
+      setRecords(prev => [
+        { id: newId, game: pickedGame, time: now, latency: '2.2s', status: 'queued' },
+        ...prev
+      ]);
       setSyncStatus(`Offline Queue: ${queuedSessions + 1} sessions stored in IndexedDB`);
     } else {
       sound.playHarmony();
-      setSyncStatus('Session logged directly to Supabase cloud');
+      setRecords(prev => [
+        { id: newId, game: pickedGame, time: now, latency: '2.0s', status: 'synced' },
+        ...prev
+      ]);
+      setSyncStatus('Session logged directly to Supabase cloud (280ms)');
     }
   };
 
@@ -110,6 +133,34 @@ export default function OfflineEngineSection() {
                 <div className="p-3 rounded-xl bg-white border border-charcoal-200 text-xs font-mono flex items-center justify-between">
                   <span className="text-charcoal-500">IndexedDB Local Buffer:</span>
                   <span className="font-bold text-tea-800">{queuedSessions} sessions queued</span>
+                </div>
+
+                {/* Live IndexedDB Record Table */}
+                <div className="space-y-1.5 pt-1">
+                  <div className="text-[10px] font-mono text-charcoal-500 uppercase font-semibold flex items-center justify-between">
+                    <span>Active IndexedDB Store:</span>
+                    <span>{records.length} records</span>
+                  </div>
+                  <div className="max-h-36 overflow-y-auto space-y-1.5 pr-0.5 font-mono text-[11px]">
+                    {records.map(rec => (
+                      <div key={rec.id} className="p-2 rounded-lg bg-white border border-charcoal-200/80 flex items-center justify-between shadow-subtle">
+                        <div className="min-w-0 flex-1 truncate mr-2">
+                          <span className="font-bold text-charcoal-900 mr-1.5">{rec.id}</span>
+                          <span className="text-charcoal-600 text-[10.5px] truncate">{rec.game}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span className="text-[10px] text-charcoal-400">{rec.time}</span>
+                          <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                            rec.status === 'queued'
+                              ? 'bg-amberGold-100 text-amberGold-900 border border-amberGold-300 animate-pulse'
+                              : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                          }`}>
+                            {rec.status === 'queued' ? 'QUEUED (LOCAL)' : 'SYNCED'}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 

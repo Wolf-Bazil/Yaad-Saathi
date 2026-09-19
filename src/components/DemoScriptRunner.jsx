@@ -1,11 +1,48 @@
-import React, { useState } from 'react';
-import { Play, Check, ChevronRight, ArrowRight, ShieldCheck, Sparkles, Trophy } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Play, Pause, RotateCcw, Check, ChevronRight, ArrowRight, ShieldCheck, Sparkles, Trophy, Mic, Clock } from 'lucide-react';
 import { DEMO_STEPS } from '../data/mockData';
 import { sound } from '../lib/audio';
 
+const PITCH_SCRIPTS = [
+  "Respected Jury members, in Step 1, a family caregiver in Shillong uploads a photo of grandson Amit. DeepSeek Flash generates a dignity-preserving reminiscence quiz without clinical anxiety or buzzers.",
+  "In Step 2, the grandmother's handset speaks regional audio: 'नमस्ते दादी! आज का खेल शुरू करें?'. Notice the 72px tap targets and AAA contrast built for 72-year-old eyes and unsteady hands.",
+  "In Step 3, Dadi matches cultural motifs like the Bihu Japi and recognizes Amit. Tap latencies are indexed at sub-millisecond precision into browser IndexedDB without needing a single internet packet.",
+  "Now, Step 4 is the critical Airplane Mode Kill-Test. Watch us turn off Wi-Fi mid-session. The entire therapy continues smoothly without dropping a frame, committing telemetry locally.",
+  "In Step 5, when edge connectivity returns, all queued sessions auto-flush seamlessly to Supabase in less than 300 milliseconds.",
+  "Finally, Step 6: the ASHA worker's tablet updates the 5-spoke cognitive radar. Our IsolationForest model verifies normal psychomotor latency, ruling out acute delirium or UTIs."
+];
+
 export default function DemoScriptRunner() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [showPitchScript, setShowPitchScript] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(180); // 3 minutes = 180s
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const active = DEMO_STEPS[currentStep];
+
+  useEffect(() => {
+    let timer;
+    if (isTimerRunning && timeLeft > 0) {
+      timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isTimerRunning, timeLeft]);
+
+  const toggleTimer = () => {
+    sound.playClick();
+    setIsTimerRunning(!isTimerRunning);
+  };
+
+  const resetTimer = () => {
+    sound.playClick();
+    setIsTimerRunning(false);
+    setTimeLeft(180);
+  };
+
+  const formatTimer = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const handleNext = () => {
     sound.playClick();
@@ -33,21 +70,55 @@ export default function DemoScriptRunner() {
     <section id="demo" className="py-20 sm:py-28 bg-paper relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Heading */}
-        <div className="max-w-3xl mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amberGold-100 border border-amberGold-300 text-amberGold-900 text-xs font-semibold uppercase tracking-wider mb-4">
-            <Trophy className="w-3.5 h-3.5 text-amberGold-700" />
-            Hackathon Presentation Protocol
+        {/* Section Heading & Live 3-Min Stopwatch */}
+        <div className="flex flex-wrap items-end justify-between gap-6 mb-12 sm:mb-16">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amberGold-100 border border-amberGold-300 text-amberGold-900 text-xs font-semibold uppercase tracking-wider mb-4">
+              <Trophy className="w-3.5 h-3.5 text-amberGold-700" />
+              Hackathon Presentation Protocol
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-charcoal-950 tracking-tight leading-[1.15]">
+              The winning 3-minute{' '}
+              <span className="font-serif italic font-normal text-tea-800">
+                SIH jury live demo.
+              </span>
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-charcoal-600 leading-relaxed font-normal">
+              Step-by-step walkthrough script engineered specifically for the Smart India Hackathon jury panel. Proving cloud-to-offline continuity in under 180 seconds.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-charcoal-950 tracking-tight leading-[1.15]">
-            The winning 3-minute{' '}
-            <span className="font-serif italic font-normal text-tea-800">
-              SIH jury live demo.
-            </span>
-          </h2>
-          <p className="mt-4 text-base sm:text-lg text-charcoal-600 leading-relaxed font-normal">
-            Step-by-step walkthrough script engineered specifically for the Smart India Hackathon jury panel. Proving cloud-to-offline continuity in under 180 seconds.
-          </p>
+
+          {/* 3-Minute Live Presentation Countdown Timer */}
+          <div className="p-4 rounded-2xl bg-white border border-charcoal-200/90 shadow-subtle flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-tea-700" />
+              <div>
+                <div className="text-[10px] font-mono text-charcoal-500 uppercase font-semibold">Jury 180s Pitch Timer</div>
+                <div className={`font-mono text-2xl font-extrabold ${timeLeft < 30 ? 'text-terracotta-600 animate-pulse' : 'text-charcoal-900'}`}>
+                  {formatTimer(timeLeft)}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1.5 border-l border-charcoal-200 pl-4">
+              <button
+                onClick={toggleTimer}
+                className={`p-2 rounded-xl text-white font-bold text-xs flex items-center gap-1 shadow-subtle transition-all active:scale-95 ${
+                  isTimerRunning ? 'bg-amberGold-600 hover:bg-amberGold-700' : 'bg-tea-900 hover:bg-tea-800'
+                }`}
+              >
+                {isTimerRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-white" />}
+                <span>{isTimerRunning ? 'Pause' : 'Start'}</span>
+              </button>
+              <button
+                onClick={resetTimer}
+                title="Reset Timer"
+                className="p-2 rounded-xl bg-charcoal-100 hover:bg-charcoal-200 text-charcoal-700 transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Stepper Timeline & Detail Card */}
@@ -121,7 +192,7 @@ export default function DemoScriptRunner() {
                   </span>
                 </div>
 
-                <div className="py-6 space-y-6">
+                <div className="py-6 space-y-5">
                   
                   {/* Action on Stage */}
                   <div>
@@ -144,13 +215,27 @@ export default function DemoScriptRunner() {
                     </div>
                   </div>
 
+                  {/* Spoken Presenter Script Box for Jury Pitch */}
+                  <div className="p-4 rounded-xl bg-amberGold-50/70 border border-amberGold-200/80 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-amberGold-900 uppercase tracking-wider">
+                        <Mic className="w-3.5 h-3.5 text-amberGold-700" />
+                        <span>Presenter Speaking Script (~20s pitch)</span>
+                      </div>
+                      <span className="text-[10px] font-mono text-amberGold-700">Verbatim Practice</span>
+                    </div>
+                    <p className="text-xs sm:text-[13px] text-amberGold-950 leading-relaxed italic bg-white/60 p-3 rounded-lg border border-amberGold-200/50">
+                      "{PITCH_SCRIPTS[currentStep]}"
+                    </p>
+                  </div>
+
                   {/* Audio trigger hint if applicable */}
                   {active.step === 2 && (
-                    <div className="p-3 rounded-xl bg-amberGold-50 border border-amberGold-200 text-xs text-amberGold-900 flex items-center justify-between">
-                      <span>Spoken voice prompt trigger enabled:</span>
+                    <div className="p-3 rounded-xl bg-tea-50 border border-tea-200 text-xs text-tea-900 flex items-center justify-between">
+                      <span>Spoken voice prompt trigger:</span>
                       <button
                         onClick={() => sound.speakPrompt('नमस्ते दादी! आज का खेल शुरू करें?')}
-                        className="px-2.5 py-1 rounded-md bg-amberGold-600 text-white font-semibold hover:bg-amberGold-700"
+                        className="px-2.5 py-1 rounded-md bg-tea-900 text-white font-semibold hover:bg-tea-800"
                       >
                         Play Greeting Again
                       </button>

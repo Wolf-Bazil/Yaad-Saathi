@@ -1,91 +1,139 @@
 import React from 'react';
-import { Heart, PhoneCall, ShieldCheck, MapPin } from 'lucide-react';
-import { NER_STATES } from '../data/mockData';
+import { ShieldCheck, Heart } from 'lucide-react';
+import { sound } from '../lib/audio';
 
 export default function SiteFooter() {
+  const dialects = [
+    'অসমীয়া (Assamese)',
+    'বাংলা (Bengali)',
+    'हिंदी (Hindi)',
+    'Khasi (খাচি)',
+    'Garo (আচিক)',
+    'Bodo (बर)',
+    'Mizo tawng',
+  ];
+
   return (
-    <footer className="bg-charcoal-950 text-white border-t border-white/10 pt-16 pb-12">
+    <footer className="bg-bone/80 border-t border-charcoal-200/80 py-16 sm:py-20 text-charcoal-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Main Footer Row */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 mb-12">
           
-          {/* Brand Info (5 cols) */}
-          <div className="md:col-span-5 space-y-4">
+          {/* Brand Col (5 cols) */}
+          <div className="md:col-span-5 space-y-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-2xl bg-tea-800 text-tea-50 flex items-center justify-center font-bold text-lg">
+              <div className="w-8 h-8 rounded-xl bg-tea-900 text-tea-50 flex items-center justify-center font-bold text-sm shadow-sm">
                 🧠
               </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold tracking-tight text-xl text-white flex items-center gap-1.5">
-                  YaadSaathi
-                  <span className="font-serif italic font-normal text-tea-300 text-sm">यादसाथी</span>
-                </span>
-                <span className="text-[10px] uppercase font-semibold tracking-wider text-tea-400">
-                  NER Cognitive Platform
-                </span>
-              </div>
+              <span className="font-extrabold text-lg text-charcoal-900">
+                YaadSaathi <span className="font-serif italic font-normal text-tea-700 text-sm">यादसाथी</span>
+              </span>
             </div>
-
-            <p className="text-xs sm:text-sm text-charcoal-400 leading-relaxed max-w-sm">
-              AI-powered, offline-first cognitive gaming & memory assistance platform preserving dignity, family memories, and clinical stability for elderly dementia patients across North East India.
+            <p className="text-xs sm:text-sm text-charcoal-600 leading-relaxed max-w-md">
+              An offline-first cognitive stimulation therapy and family reminiscence platform engineered for elderly dementia patients, caregivers, and ASHA workers across North East India.
             </p>
-
-            <div className="pt-2 text-[11px] font-mono text-tea-300">
-              Smart India Hackathon (SIH 2026) • Healthcare & MedTech
+            <div className="text-xs text-charcoal-500 pt-1">
+              Smart India Hackathon (SIH 2026) · Healthcare & MedTech Solution
             </div>
           </div>
 
-          {/* Regional Coverage (4 cols) */}
-          <div className="md:col-span-4 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-charcoal-300">
-              North Eastern Regional Footprint
-            </h4>
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {NER_STATES.map(state => (
-                <span key={state} className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-[11px] text-charcoal-300">
-                  {state}
+          {/* Clinical Navigation (3 cols) */}
+          <div className="md:col-span-3">
+            <div className="text-xs font-bold uppercase tracking-wider text-charcoal-900 mb-3">
+              Platform Architecture
+            </div>
+            <ul className="space-y-2 text-xs">
+              <li>
+                <a
+                  href="#reality"
+                  onClick={() => sound.playClick()}
+                  className="hover:text-tea-800 transition-colors"
+                >
+                  Regional Reality in NER
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#therapy"
+                  onClick={() => sound.playClick()}
+                  className="hover:text-tea-800 transition-colors"
+                >
+                  4 Clinical CST Pillars
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#offline"
+                  onClick={() => sound.playClick()}
+                  className="hover:text-tea-800 transition-colors"
+                >
+                  Offline IndexedDB Engine
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#telemetry"
+                  onClick={() => sound.playClick()}
+                  className="hover:text-tea-800 transition-colors"
+                >
+                  Caregiver & ASHA Telemetry
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#field"
+                  onClick={() => sound.playClick()}
+                  className="hover:text-tea-800 transition-colors"
+                >
+                  Doorstep Care Journey
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#evidence"
+                  onClick={() => sound.playClick()}
+                  className="hover:text-tea-800 transition-colors"
+                >
+                  Peer-Reviewed Citations
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Regional Languages (4 cols) */}
+          <div className="md:col-span-4">
+            <div className="text-xs font-bold uppercase tracking-wider text-charcoal-900 mb-3">
+              Regional Dialects Supported
+            </div>
+            <div className="flex flex-wrap gap-1.5 text-[11px]">
+              {dialects.map((lang) => (
+                <span
+                  key={lang}
+                  className="px-2.5 py-1 rounded-lg bg-white border border-charcoal-200 text-charcoal-800 font-medium"
+                >
+                  {lang}
                 </span>
               ))}
             </div>
-            <p className="text-[11px] text-charcoal-500 pt-2">
-              Designed for Sub-Centres, Primary Health Centres (PHCs), and informal family homes.
+            <p className="text-[11px] text-charcoal-500 mt-3 leading-relaxed">
+              Synthesized locally via Web Speech API with zero network latency.
             </p>
-          </div>
-
-          {/* Emergency & Eldercare Helplines (3 cols) */}
-          <div className="md:col-span-3 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-charcoal-300 flex items-center gap-1.5">
-              <PhoneCall className="w-3.5 h-3.5 text-tea-400" />
-              National Support Helplines
-            </h4>
-            
-            <div className="space-y-2 text-xs">
-              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                <div className="text-charcoal-400 text-[10px] uppercase font-mono">Elderline (Senior Citizens)</div>
-                <div className="font-bold text-white text-sm">Toll-Free: 14567</div>
-              </div>
-              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                <div className="text-charcoal-400 text-[10px] uppercase font-mono">KIRAN (Mental Health)</div>
-                <div className="font-bold text-white text-sm">Toll-Free: 1800-599-0019</div>
-              </div>
-            </div>
           </div>
 
         </div>
 
-        {/* Bottom Specs & Copyright */}
-        <div className="pt-8 flex flex-wrap items-center justify-between gap-4 text-xs text-charcoal-500 font-mono">
-          <div className="flex items-center gap-2">
-            <span>© 2026 YaadSaathi. Built for Smart India Hackathon.</span>
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-charcoal-200/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-charcoal-500">
+          <div>
+            Designed with dignity and clinical respect for the elders of North East India.
           </div>
-
-          <div className="flex items-center gap-4 text-[11px]">
-            <span>100% Offline-First IndexedDB</span>
-            <span>•</span>
-            <span>WCAG AAA Compliant</span>
-            <span>•</span>
-            <span>MIT License</span>
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5 text-tea-800 font-medium">
+              <ShieldCheck className="w-4 h-4 text-tea-700" />
+              WCAG 2.1 AA Compliant
+            </span>
+            <span>·</span>
+            <span>MIT Open Source</span>
           </div>
         </div>
 

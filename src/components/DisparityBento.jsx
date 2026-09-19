@@ -1,8 +1,26 @@
-import React from 'react';
-import { AlertTriangle, WifiOff, Languages, Stethoscope, ArrowUpRight, Compass, ShieldAlert } from 'lucide-react';
+import React, { useState } from 'react';
+import { AlertTriangle, WifiOff, Languages, Stethoscope, ArrowUpRight, Compass, ShieldAlert, MapPin, Sparkles } from 'lucide-react';
 import { NER_STATES } from '../data/mockData';
+import { sound } from '../lib/audio';
+
+const STATE_REALITIES = {
+  'Assam': 'Majuli & Karbi Anglong: ~180km mountain travel to GMCH for clinical evaluation. Over 40% tea garden workers lack English/Hindi literacy.',
+  'Meghalaya': 'East Khasi & Jaintia Hills: Monsoon landslides cause 18+ days of fiber line cuts annually. Rain-resilient offline mode critical.',
+  'Arunachal Pradesh': 'Tawang & Dibang Valley: Zero resident geriatric neurologists across 16 border districts; 100% offline CST dependency.',
+  'Mizoram': 'Aizawl & Lunglei: Mizo dialect spoken by 87% elders; clinical tests in English induce high false-positive cognitive impairment rates.',
+  'Nagaland': 'Mon & Tuensang: Steep topography isolates hill villages from Kohima Medical College. ASHA workers are sole frontline caregivers.',
+  'Manipur': 'Churachandpur & Ukhrul: Primary healthcare sub-centres rely on battery-backed handsets with intermittent 2G edge signals.',
+  'Tripura': 'Dhalai & North Tripura: Kokborok language integration essential for autobiographical memory stimuli among indigenous elders.',
+  'Sikkim': 'North Sikkim (Mangan): Severe winter snow cuts road access; local IndexedDB therapy queues synchronize only during thaw.'
+};
 
 export default function DisparityBento() {
+  const [selectedState, setSelectedState] = useState('Assam');
+
+  const handleStateClick = (state) => {
+    sound.playClick();
+    setSelectedState(state);
+  };
   return (
     <section id="problem" className="py-20 sm:py-28 bg-white border-y border-charcoal-100 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,17 +71,44 @@ export default function DisparityBento() {
               </div>
             </div>
 
-            {/* State Pills */}
+            {/* Interactive State Pills & Ground Reality Box */}
             <div className="relative z-10 mt-8 pt-6 border-t border-charcoal-200/60">
-              <div className="text-xs font-semibold text-charcoal-500 uppercase tracking-wider mb-2.5">
-                Target Geographic Footprint:
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-semibold text-charcoal-500 uppercase tracking-wider flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-tea-700" />
+                  Target Footprint (Select to inspect ground reality):
+                </span>
+                <span className="text-[11px] font-mono text-tea-700 font-bold">
+                  {selectedState} Focused
+                </span>
               </div>
+
               <div className="flex flex-wrap gap-2">
-                {NER_STATES.map(state => (
-                  <span key={state} className="px-2.5 py-1 rounded-lg bg-white border border-charcoal-200 text-xs font-medium text-charcoal-700 shadow-subtle">
-                    {state}
-                  </span>
-                ))}
+                {NER_STATES.map(state => {
+                  const isActive = selectedState === state;
+                  return (
+                    <button
+                      key={state}
+                      onClick={() => handleStateClick(state)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all shadow-subtle active:scale-95 ${
+                        isActive
+                          ? 'bg-tea-900 text-white shadow-elevation scale-105'
+                          : 'bg-white border border-charcoal-200 text-charcoal-700 hover:bg-charcoal-50 hover:border-charcoal-300'
+                      }`}
+                    >
+                      {state}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Dynamic State Intelligence Callout */}
+              <div className="mt-4 p-3.5 rounded-xl bg-white/90 border border-charcoal-200/90 text-xs text-charcoal-800 leading-relaxed shadow-subtle flex items-start gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-terracotta-500 shrink-0 mt-1.5 animate-pulse" />
+                <div>
+                  <strong className="text-charcoal-950 font-bold">{selectedState} Health Infrastructure Gap: </strong>
+                  <span>{STATE_REALITIES[selectedState]}</span>
+                </div>
               </div>
             </div>
           </div>
